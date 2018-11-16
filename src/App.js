@@ -8,8 +8,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Books from './Books';
 import MyForm from './MyForm';
+import './App.css';
 
 class App extends Component {
     constructor(props) {
@@ -21,13 +27,6 @@ class App extends Component {
         };
         let myThis = this;
 
-/*
-        fetch('http://localhost:3001/get')
-          .then(result => result.json())
-          .then(result => {
-              this.setState({ books: result});
-          });
-*/
         fetch('http://localhost:3001/get', {
             method: 'GET'
         }).then(function(response) {
@@ -124,24 +123,13 @@ class App extends Component {
           }).catch(function(error) {
               console.log(error);
           });
-/*
-        fetch('http://localhost:3001/save?id=' + chosen_id + '&title=' + book.title + '&author=' + book.author)
-          .then(result => result.json())
-          .then(result => {
-              console.log(result);
-              if (chosen_id === -1) {
-                  book.id = result.insertId;
-                  this.setState({books: [...this.state.books, book]});
-              }
-          });
-*/
     }
 
     render() {
         const { books } = this.state;
 
         return (
-            <div>
+            <div id="books_container" className="books_container">
                 <CssBaseline />
                 <AppBar position="static">
                     <Toolbar>
@@ -149,20 +137,38 @@ class App extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit">
-                            Book Store
+                            Books
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer open={this.state.drawer_open}>
                     <div>
-                      <IconButton onClick={this.handleDrawerClose}>
-                          <ChevronLeftIcon />
-                      </IconButton>
+                        <IconButton onClick={this.handleDrawerClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <div>
+                        <Divider />
+                        <List>
+                            {['Link 1', 'Link 2', 'Link 3'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                        <Divider />
+                        <List>
+                            {['Link 4', 'Link 5', 'Link 6'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
                     </div>
                </Drawer>
                 <main>
                     <Grid container spacing={24} style={{padding: 24}}>
-                        <Grid item key="mygrid" xs={12} sm={6} lg={4} xl={3}>
+                        <Grid item key="mygrid" xs={12} sm={6} lg={4} xl={3} className="mygrid">
                             <Books bookData={books} removeBook={this.removeBook} loadBook={this.loadBook} />
                             <MyForm handleSubmit={this.handleSubmit} shareMethods={this.acceptMethods} />
                         </Grid>
